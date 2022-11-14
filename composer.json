@@ -1,0 +1,66 @@
+{
+    "name": "sixincode/hive-stream",
+    "description": " Package For Hive Series Stream Protocole and Elements ",
+    "keywords": [
+        "Sixincode",
+        "laravel",
+        "hive-stream"
+    ],
+    "homepage": "https://github.com/sixincode/hive-stream",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sixincode",
+            "email": "sixincode@6ixin.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "illuminate/contracts": "^9.0",
+        "sixincode/modules-init": "^1.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^6.0",
+        "orchestra/testbench": "^7.0",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sixincode\\HiveStream\\": "src",
+            "Sixincode\\HiveStream\\Database\\Factories\\": "database/factories"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sixincode\\HiveStream\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sixincode\\HiveStream\\HiveStreamServiceProvider"
+            ],
+            "aliases": {
+                "HiveStream": "Sixincode\\HiveStream\\Facades\\HiveStream"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
