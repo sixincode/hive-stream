@@ -1,2 +1,3 @@
 <div>
+  terms
 </div>

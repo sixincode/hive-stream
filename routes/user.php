@@ -5,7 +5,7 @@ use Sixincode\HiveStream\Http\Controllers\User as Controllers;
 use Sixincode\HiveStream\Http\Livewire as Livewires;
 
 Route::middleware([
-    'auth:sanctum',
+    // 'auth:sanctum',
     config('hive-stream.middleware_auth', ['auth'])
 ])->prefix('home')->name('user.')->group(function () {
 

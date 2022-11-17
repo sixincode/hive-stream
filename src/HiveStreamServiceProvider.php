@@ -2,11 +2,14 @@
 
 namespace Sixincode\HiveStream;
 
+use Sixincode\HiveStream\Http\Middleware\HiveStreamAuthenticated;
 use Sixincode\ModulesInit\Package;
 use Sixincode\ModulesInit\PackageServiceProvider;
 use Sixincode\HiveStream\Commands\HiveStreamCommand;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Livewire\Livewire;
+use Illuminate\Routing\Router;
+use Illuminate\Contracts\Http\Kernel;
 use Sixincode\HiveStream\Http\Livewire\Auth\Login;
 use Sixincode\HiveStream\Http\Livewire\Auth\Register;
 use Sixincode\HiveStream\Http\Livewire\Central\Privacy\Index as PrivacyIndex;
@@ -29,8 +32,13 @@ class HiveStreamServiceProvider extends PackageServiceProvider
             ->hasCommand(HiveStreamCommand::class);
     }
 
-    public function bootingPackage()
+    public function bootingPackage(Kernel $kernel)
     {
+      $kernel->pushMiddleware(HiveStreamAuthenticated::class);
+
+      $router = $this->app->make(Router::class);
+      $router->aliasMiddleware('hiveStreamAuth', HiveStreamAuthenticated::class);
+
       Livewire::component('hive-stream-login', Login::class);
       Livewire::component('hive-stream-register', Register::class);
       Livewire::component('hive-stream-privacy-index', PrivacyIndex::class);
@@ -39,6 +47,5 @@ class HiveStreamServiceProvider extends PackageServiceProvider
       Livewire::component('hive-stream-profile-index', HomeProfile::class);
       Livewire::component('hive-stream-settings-index', HomeSettings::class);
       Livewire::component('hive-stream-tokens-index', HomeTokens::class);
-
     }
 }

@@ -1,3 +1,3 @@
-<x-hive-display-default-app>
+<x-hive-display-layout-app>
 
-</x-hive-display-default-app>
+</x-hive-display-layout-app>

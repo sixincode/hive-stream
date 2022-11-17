@@ -1,4 +1,4 @@
-<x-hive-display-default-app>
+<x-hive-display-layout-app>
   <livewire:hive-stream-settings-index />
 
-</x-hive-display-default-app>
+</x-hive-display-layout-app>
