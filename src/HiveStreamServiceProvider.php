@@ -35,8 +35,8 @@ class HiveStreamServiceProvider extends PackageServiceProvider
 
     public function bootingPackage($kernel = null,)
     {
-      // $kernel = new Kernel;
-      $this->kernel->pushMiddleware(HiveStreamApplyProfile::class);
+      $kernel = resolve(Kernel::class);
+      $kernel->pushMiddleware(HiveStreamApplyProfile::class);
 
       $router = $this->app->make(Router::class);
       $router->aliasMiddleware('hiveStreamAuth', HiveStreamAuthenticated::class);
