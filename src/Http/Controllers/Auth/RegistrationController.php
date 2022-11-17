@@ -4,7 +4,7 @@ namespace Sixincode\HiveStream\Http\Controllers\Auth;
 
 use Illuminate\Routing\Controller;
 
-class RegisterController extends Controller
+class RegistrationController extends Controller
 {
   public function registrationPage()
   {

@@ -4,7 +4,7 @@ namespace Sixincode\HiveStream\Http\Livewire\Central\Privacy;
 
 use Livewire\Component;
 
-class Terms extends Component
+class Index extends Component
 {
   public function mount()
   {
