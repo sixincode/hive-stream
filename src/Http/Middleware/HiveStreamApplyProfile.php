@@ -4,7 +4,7 @@ namespace Sixincode\HiveStream\Http\Middleware;
 
 use Closure;
 
-class HiveStreamApplyProfile extends Controller
+class HiveStreamApplyProfile
 {
   public function handle($request, Closure $next)
   {
