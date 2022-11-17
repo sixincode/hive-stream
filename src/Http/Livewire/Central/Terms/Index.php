@@ -1,6 +1,6 @@
 <?php
 
-namespace Sixincode\HiveStream\Http\Livewire\Central\Privacy;
+namespace Sixincode\HiveStream\Http\Livewire\Central\Terms;
 
 use Livewire\Component;
 
