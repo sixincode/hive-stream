@@ -3,6 +3,7 @@
 namespace Sixincode\HiveStream;
 
 use Sixincode\HiveStream\Http\Middleware\HiveStreamAuthenticated;
+use Sixincode\HiveStream\Http\Middleware\HiveStreamApplyProfile;
 use Sixincode\ModulesInit\Package;
 use Sixincode\ModulesInit\PackageServiceProvider;
 use Sixincode\HiveStream\Commands\HiveStreamCommand;
@@ -32,9 +33,10 @@ class HiveStreamServiceProvider extends PackageServiceProvider
             ->hasCommand(HiveStreamCommand::class);
     }
 
-    public function bootingPackage(Kernel $kernel)
+    public function bootingPackage()
     {
-      $kernel->pushMiddleware(HiveStreamAuthenticated::class);
+      $kernel = new Kernel;
+      $kernel->pushMiddleware(HiveStreamApplyProfile::class);
 
       $router = $this->app->make(Router::class);
       $router->aliasMiddleware('hiveStreamAuth', HiveStreamAuthenticated::class);
