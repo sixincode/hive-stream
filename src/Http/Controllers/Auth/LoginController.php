@@ -10,4 +10,9 @@ class LoginController extends Controller
   {
     return view('hive-stream::auth.login');
   }
+
+  public function loginSubmit()
+  {
+    // return view('hive-stream::auth.register');
+  }
 }

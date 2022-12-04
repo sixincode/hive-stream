@@ -6,12 +6,12 @@ use Illuminate\Routing\Controller;
 
 class HomeController extends Controller
 {
-  public function home()
+  public function homePage()
   {
     return view('hive-stream::user.home.index');
   }
 
-  public function profile()
+  public function profilePage()
   {
     return view('hive-stream::user.profile.index');
   }

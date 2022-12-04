@@ -8,8 +8,9 @@ use Sixincode\HiveStream\Contracts\OnBoardNewUserResponse;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class RegistrationController extends Controller
+class RegistrationControllerxx extends Controller
 {
 
   protected $guard;
@@ -36,8 +37,7 @@ class RegistrationController extends Controller
     // dd($user);
     // auth()->login($user);
     // auth()->guard('web')->login($user);
-
-    $this->guard->login($user);
-    return redirect()->route('user.home')->with('success','Welcome !');
+     Auth::guard('web')->login($user);
+     return redirect()->route('user.home')->with('success','Welcome !');
   }
 }

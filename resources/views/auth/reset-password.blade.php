@@ -1,3 +1,3 @@
 <x-hive-display-layout>
-  <livewire:hive-stream-login />
+  <livewire:hive-stream-reset-password/>
 </x-hive-display-layout>
