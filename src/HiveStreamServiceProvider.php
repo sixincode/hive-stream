@@ -24,7 +24,7 @@ class HiveStreamServiceProvider extends PackageServiceProvider
         $package
             ->name('hive-stream')
             ->hasConfigFile()
-            ->hasRoutes(['web','user'])
+            ->hasRoutes(['web','user','api'])
             ->hasViews()
             ->hasMigration('create_hive-stream_table')
             ->hasCommand(HiveStreamCommand::class);
