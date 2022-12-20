@@ -14,7 +14,7 @@
   </div>
 
 
-      <form action="{{ route('register') }}" method="POST">
+      <form action="{{ route('login') }}" method="POST">
           @csrf
        <div class="grid lg:grid-cols-12 gap-4 ">
               <div class="lg:col-span-12">
