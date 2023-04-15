@@ -8,14 +8,19 @@ use Sixincode\HiveStream\Http\Middleware\HiveStreamIsVerified;
 use Sixincode\ModulesInit\Package;
 use Sixincode\ModulesInit\PackageServiceProvider;
 use Sixincode\HiveStream\Commands\HiveStreamCommand;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Livewire\Livewire;
 use Illuminate\Routing\Router;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Database\Schema\Blueprint;
-use Sixincode\HiveStream\Gear\OnBoardNewUser;
 use Laravel\Fortify\Fortify;
-use Sixincode\HiveStream\Http\Livewire as HiveStreamLivewire;
+use Laravel\Jetstream\Jetstream;
+use Sixincode\HiveStream\Traits\HiveStreamDatabase;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Blade;
+use Livewire\Livewire;
+use HiveCommunity\Models\TeamMembership;
+use HiveCommunity\Models\Team;
+use App\Models\User;
+use Sixincode\HiveStream\Gear\OnBoardNewUser;
 
 class HiveStreamServiceProvider extends PackageServiceProvider
 {
@@ -23,44 +28,79 @@ class HiveStreamServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('hive-stream')
-            ->hasConfigFile()
+            ->hasConfigFile(['hive-stream','hive-stream-components','hive-stream-auth-settings'])
             ->hasRoutes(['web','user','api'])
             ->hasViews()
             ->hasMigration('create_hive-stream_table')
             ->hasCommand(HiveStreamCommand::class);
+            $this->app->register(\Laravel\Fortify\FortifyServiceProvider::class);
+            $this->app->register(\Laravel\Jetstream\JetstreamServiceProvider::class);
+
+            $this->registerHiveStreamDatabaseMethods();
     }
 
     public function bootingPackage()
     {
       $this->bootHiveStreamMiddlewares();
+      $this->morphMapping();
       $this->bootLaravelFortifySettings();
-      $this->bootHiveStreamLivewireComponents();
+      $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
-    public function bootHiveStreamLivewireComponents()
+    public function packageBooted()
     {
-      Livewire::component('hive-stream-login', HiveStreamLivewire\Auth\Login::class);
-      Livewire::component('hive-stream-register', HiveStreamLivewire\Auth\Register::class);
-      Livewire::component('hive-stream-confirm-password', HiveStreamLivewire\Auth\ConfirmPassword::class);
-      Livewire::component('hive-stream-forgot-password', HiveStreamLivewire\Auth\ForgotPassword::class);
-      Livewire::component('hive-stream-reset-password', HiveStreamLivewire\Auth\ResetPassword::class);
-      Livewire::component('hive-stream-two-factor-challenge', HiveStreamLivewire\Auth\TwoFactorChallenge::class);
-      Livewire::component('hive-stream-verify-email', HiveStreamLivewire\Auth\VerifyEmail::class);
-
-      Livewire::component('hive-stream-privacy-index', HiveStreamLivewire\Central\Privacy\Index::class);
-      Livewire::component('hive-stream-terms-index', HiveStreamLivewire\Central\Terms\Index::class);
-
-      Livewire::component('hive-stream-home-index', HiveStreamLivewire\User\Home\Index::class);
-      Livewire::component('hive-stream-profile-index', HiveStreamLivewire\User\Profile\Index::class);
-      Livewire::component('hive-stream-settings-index', HiveStreamLivewire\User\Settings\Index::class);
-      Livewire::component('hive-stream-tokens-index', HiveStreamLivewire\User\Tokens\Index::class);
-      Livewire::component('hive-stream-verification-index', VerificationRequest::class);
+      $this->bootHiveStreamBladeAndLivewireComponents();
     }
 
-    public function bootHiveStreamMiddlewares()
+    public function bootHiveStreamBladeAndLivewireComponents()
     {
+      $prefix = config('hive-stream-components.prefix', 'hive-stream');
+      foreach (config('hive-stream-components.livewire', []) as $alias => $component) {
+          $alias = $prefix ? "$prefix-$alias" : $alias;
+          Livewire::component($alias, $component);
+        }
+     }
+
+     private function registerHiveStreamDatabaseMethods(): void
+     {
+       Blueprint::macro('addSubscriptionPlanFields', function (Blueprint $table, $properties = []) {
+         HiveStreamDatabase::addSubscriptionPlanFields($table, $properties);
+       });
+
+       Blueprint::macro('addSubscriptionFeatureFields', function (Blueprint $table, $properties = []) {
+         HiveStreamDatabase::addSubscriptionFeatureFields($table, $properties);
+       });
+
+       Blueprint::macro('addSubscriptionFeaturePlanFields', function (Blueprint $table, $properties = []) {
+         HiveStreamDatabase::addSubscriptionFeaturePlanFields($table, $properties);
+       });
+
+       Blueprint::macro('addSubscriptionPlanxFields', function (Blueprint $table, $properties = []) {
+         HiveStreamDatabase::addSubscriptionPlanxFields($table, $properties);
+       });
+
+       Blueprint::macro('addSubscriptionUsageFields', function (Blueprint $table, $properties = []) {
+         HiveStreamDatabase::addSubscriptionUsageFields($table, $properties);
+       });
+
+       Blueprint::macro('addProfileFields', function (Blueprint $table, $properties = []) {
+         HiveStreamDatabase::addProfileFields($table, $properties);
+       });
+
+       Blueprint::macro('addSettingsFields', function (Blueprint $table, $properties = []) {
+         HiveStreamDatabase::addSettingsFields($table, $properties);
+       });
+
+       Blueprint::macro('addLoginFields', function (Blueprint $table, $properties = []) {
+         HiveStreamDatabase::addLoginFields($table, $properties);
+       });
+     }
+
+     public function bootHiveStreamMiddlewares()
+     {
       // $kernel = resolve(Kernel::class);
       $router = $this->app->make(Router::class);
+      // $this->loadSeeders();
       $router->aliasMiddleware('user_verified', HiveStreamApplyProfile::class);
       $router->aliasMiddleware('hiveStreamAuth', HiveStreamAuthenticated::class);
     }
@@ -90,4 +130,27 @@ class HiveStreamServiceProvider extends PackageServiceProvider
       });
       Fortify::createUsersUsing(OnBoardNewUser::class);
     }
+
+    public function bootLaravelJetstreamSettings()
+    {
+      Jetstream::useUserModel(User::class);
+      Jetstream::useTeamModel(Team::class);
+      Jetstream::useMembershipModel(TeamMembership::class);
+      Jetstream::createTeamsUsing(OnBoardNewUser::class);
+    }
+
+    public function morphMapping()
+    {
+      Relation::morphMap([
+          'User' => 'App\Models\User',
+      ]);
+    }
+
+    // protected function loadSeeders(){
+    //     $this->callAfterResolving(
+    //       Database\Seeders\DatabaseSeeder::class, function ($seeder) {
+    //                  $seeder->call(Sixincode\HiveStream\Database\Seeders\HiveStreamDatabaseSeeder::class );
+    //                 // Code that will print out in console after migration is succesful
+    //          });
+    // }
 }

@@ -21,6 +21,10 @@ Route::middleware(
     Route::get('/settings', [Controllers\SettingsController::class, 'settingsPage'])->name('settings.index');
     Route::get('/tokens', [Controllers\ApiTokenController::class, 'tokensPage'])->name('tokens.index');
     Route::get('/boarding', [Controllers\HomeController::class, 'homePage'])->name('boarding');
+
+    Route::get('/subscriptions/upgrade/{plan}', [Controllers\SubscriptionController::class, 'upgradeSubscription'])->name('subscriptions.upgrade');
+    Route::get('/subscriptions/downgrade/{plan}', [Controllers\SubscriptionController::class, 'downgradeSubscription'])->name('subscriptions.downgrade');
+    Route::get('/subscriptions/{plan}', [Controllers\SubscriptionController::class, 'showSubscription'])->name('subscriptions.show');
   });
 
 });

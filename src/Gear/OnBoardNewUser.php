@@ -25,6 +25,7 @@ class OnBoardNewUser extends Controller
  {
      Validator::make($input, [
          'name' => ['required_without:first_name,last_name', 'string', 'max:255'],
+         'username' => ['string', 'max:255', 'unique:users'],
          'first_name' => ['required_without:name', 'string', 'max:255', 'min:2'],
          'last_name' => ['required_without:name', 'string', 'max:255','min:2'],
          'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -32,14 +33,25 @@ class OnBoardNewUser extends Controller
          // 'terms' =>  ['accepted', 'required'],
      ])->validate();
 
+     // return DB::transaction(function () use ($input) {
+     //     $input['password'] = Hash::make($input['password']);
+     //     return tap(
+     //       User::create($input),
+     //          function (User $user) {
+     //             $this->getBehaviour($user);
+     //         }
+     //    );
+     // });
      return DB::transaction(function () use ($input) {
-         $input['password'] = Hash::make($input['password']);
-         return tap(
-           User::create($input),
-              function (User $user) {
-                 $this->getBehaviour($user);
-             }
-        );
+         return tap(User::create([
+             'username' => $input['username'],
+             'first_name' => $input['first_name'],
+             'last_name' => $input['last_name'],
+             'email' => $input['email'],
+             'password' => Hash::make($input['password']),
+         ]), function (User $user) {
+             $this->getBehaviour($user);
+         });
      });
  }
 
@@ -67,10 +79,12 @@ class OnBoardNewUser extends Controller
 
  protected function createTeam(User $user)
  {
-     $user->ownedTeams()->save(Team::forceCreate([
-         'user_id' => $user->id,
-         'name' => $user->username,
-         'personal_team' => true,
-       ]));
+   $user->ownedTeams()->save(
+     Team::forceCreate([
+       'user_id' => $user->id,
+       'name' => $user->username,
+       'personal_team' => true,
+     ]),
+   );
   }
 }

@@ -3,17 +3,95 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Sixincode\HiveStream\Traits\HiveStreamDatabase;
 
 return new class extends Migration
 {
     public function up()
     {
-        Schema::create('hive-stream_table', function (Blueprint $table) {
-            $table->id();
+      $tableNames  = config('hive-stream.table_names');
+      $columnNames = config('hive-stream.column_names');
 
-            // add fields
+      if (empty($tableNames)) {
+        throw new \Exception('Error: config/hive-stream.php not loaded. Run [php artisan config:clear] and try again.');
+      }
+      if (empty($columnNames)) {
+        throw new \Exception('Error: config/hive-stream.php not loaded. Run [php artisan config:clear] and try again.');
+      }
 
-            $table->timestamps();
+      if(!Schema::hasTable($tableNames['subscriptionPlans'])) {
+          Schema::create($tableNames['subscriptionPlans'], function (Blueprint $table) {
+            HiveStreamDatabase::addSubscriptionPlanFields($table);
+          });
+        }
+
+        if(!Schema::hasTable($tableNames['subscriptionFeatures'])) {
+            Schema::create($tableNames['subscriptionFeatures'], function (Blueprint $table) {
+              HiveStreamDatabase::addSubscriptionFeatureFields($table);
+            });
+          }
+
+      if(!Schema::hasTable($tableNames['subscriptionFeaturePlan'])) {
+          Schema::create($tableNames['subscriptionFeaturePlan'], function (Blueprint $table) {
+              HiveStreamDatabase::addSubscriptionFeaturePlanFields($table);
+          });
+        }
+
+      if(!Schema::hasTable($tableNames['subscriptionPlansx'])) {
+          Schema::create($tableNames['subscriptionPlansx'], function (Blueprint $table) {
+            HiveStreamDatabase::addSubscriptionPlanxFields($table);
+          });
+        }
+
+
+      if(!Schema::hasTable($tableNames['subscriptionUsages'])) {
+          Schema::create($tableNames['subscriptionUsages'], function (Blueprint $table) {
+            HiveStreamDatabase::addSubscriptionUsageFields($table);
         });
+      }
+
+
+      if(!Schema::hasTable($tableNames['profiles'])) {
+          Schema::create($tableNames['profiles'], function (Blueprint $table) {
+            HiveStreamDatabase::addProfileFields($table);
+          });
+        }
+
+      if(!Schema::hasTable($tableNames['settings'])) {
+          Schema::create($tableNames['settings'], function (Blueprint $table) {
+            HiveStreamDatabase::addSettingsFields($table);
+           });
+        }
+
+      if(!Schema::hasTable($tableNames['logins'])) {
+          Schema::create($tableNames['logins'], function (Blueprint $table) {
+            HiveStreamDatabase::addLoginFields($table);
+           });
+        }
+
+    }
+
+
+
+    public function down()
+    {
+      $tableNames  = config('hive-stream.table_names');
+      $columnNames = config('hive-stream.column_names');
+
+      if (empty($tableNames)) {
+        throw new \Exception('Error: config/hive-stream.php not loaded. Run [php artisan config:clear] and try again.');
+      }
+      if (empty($columnNames)) {
+        throw new \Exception('Error: config/hive-stream.php not loaded. Run [php artisan config:clear] and try again.');
+      }
+
+      Schema::dropIfExists($tableNames['subscriptionPlans']);
+      Schema::dropIfExists($tableNames['subscriptionFeatures']);
+      Schema::dropIfExists($tableNames['subscriptionFeaturePlan']);
+      Schema::dropIfExists($tableNames['subscriptionPlansx']);
+      Schema::dropIfExists($tableNames['subscriptionUsages']);
+      Schema::dropIfExists($tableNames['subscriptionSubscribers']);
+      Schema::dropIfExists($tableNames['profiles']);
+      Schema::dropIfExists($tableNames['settings']);
     }
 };

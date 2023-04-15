@@ -59,7 +59,7 @@
                 "Sixincode\\HiveStream\\HiveStreamServiceProvider"
             ],
             "aliases": {
-                "HiveStream": "Sixincode\\HiveStream\\Facades\\HiveStream"
+              "HiveStream": "Sixincode\\HiveStream\\Facades\\HiveStream"
             }
         }
     },

@@ -1,4 +1,5 @@
 <div>
+  <div x-data="loginUser">
   <x-hive-display-section class="relative h-screen items-center grid sm:py-4">
           <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2830&amp;q=80&amp;sat=-100" alt="People working on laptops">
       <div class="z-10 sm:max-w-xl w-full bg-white/95 mx-auto sm:shadow rounded-md p-4 lg:p-8 grid gap-6">
@@ -20,12 +21,12 @@
               <div class="lg:col-span-12">
                 <x-hive-form-input
                   name="email"
-                  placeholder="{{__('Username, email Address or phone')}}"
+                  placeholder="{{__('Username, email or phone')}}"
                   required="true"
                   label="{{__('Email Address')}}"
                   value="{{ old('email', '') }}"
                   id="email"
-                  error_message="{{__('Please enter your e-mail')}}" />
+                    />
                 </div>
 
                 <div class="lg:col-span-12">
@@ -36,7 +37,9 @@
                     required="true"
                     label="{{__('Password')}}"
                     id="password"
-                    error_message="{{__('Please enter your password')}}" />
+                     />
+
+
                   </div>
 
                   </div>
@@ -74,3 +77,15 @@
       </div>
   </x-hive-display-section>
 </div>
+</div>
+@pushOnce('scripts')
+  <script>
+  function loginUser() {
+    return {
+      email: '',
+      phone: '',
+      password: '',
+    }
+  }
+  </script>
+@endPushOnce
