@@ -1,18 +1,16 @@
 <div>
-  <div x-data="loginUser">
+ <div x-data="loginUser">
+  <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2830&amp;q=80&amp;sat=-100" alt="People working on laptops">
   <x-hive-display-section class="relative h-screen items-center grid sm:py-4">
-          <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2830&amp;q=80&amp;sat=-100" alt="People working on laptops">
       <div class="z-10 sm:max-w-xl w-full bg-white/95 mx-auto sm:shadow rounded-md p-4 lg:p-8 grid gap-6">
         <div class="flex space-x-4">
-                 <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&amp;shade=600" alt="Your Company">
-                <h2 class="text-3xl font-bold tracking-tight text-gray-800">
-                {{__('Login')}}
-                </h2>
-
-              </div>
+           <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&amp;shade=600" alt="Your Company">
+           <h2 class="text-3xl font-bold tracking-tight text-gray-800">
+            {{__('Login')}}
+           </h2>
+         </div>
         <div>
-
-  </div>
+      </div>
 
 
       <form action="{{ route('login') }}" method="POST">
