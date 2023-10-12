@@ -45,6 +45,24 @@
     }
   }
 
+  function check_hasTeamOwnershipOnCreateFeatures()
+  {
+    if(function_exists('hasTeamOwnershipOnCreateFeatures')) {
+        return hasTeamOwnershipOnCreateFeatures();
+    }else{
+        return config('hive-stream-features.hasTeamOwnershipOnCreateFeatures');
+    }
+  }
+
+  function check_hasTeamAppDefaultMembershipFeatures()
+  {
+    if(function_exists('hasTeamAppDefaultMembershipFeatures')) {
+        return hasTeamAppDefaultMembershipFeatures();
+    }else{
+        return config('hive-stream-features.hasTeamAppDefaultMembershipFeatures');
+    }
+  }
+
   function check_hasSubscriptionFeatures()
   {
     if(function_exists('hasSubscriptionFeatures')) {
