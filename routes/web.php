@@ -8,7 +8,7 @@ Route::middleware(
   config('hive-stream-middlewares.central', ['web']),
 )->group(function () {
 
-  if(hasTermsAndPrivacyPolicyFeatures()) {
+  if(check_hasTermsAndPrivacyPolicyFeatures()) {
     Route::get('/terms', [Controllers\Central\TermsOfServiceController::class, 'showTerms'])->name('terms.show');
     Route::get('/privacy', [Controllers\Central\PrivacyPolicyController::class, 'showPrivacy'])->name('policy.show');
   }
