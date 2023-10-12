@@ -9,7 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 
-class UserRegistrationControllers   extends Controller
+class UserRegistrationController extends Controller
 {
 
   protected $guard;
