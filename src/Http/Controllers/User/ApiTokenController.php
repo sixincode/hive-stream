@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 
 class ApiTokenController extends Controller
 {
-  public function tokens()
+  public function tokensPage()
   {
     return view('hive-stream::user.tokens.index');
   }

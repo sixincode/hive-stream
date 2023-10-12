@@ -1,6 +1,6 @@
 <?php
 
-namespace Sixincode\HiveStream\Http\Controllers\User;
+namespace Sixincode\HiveStream\Http\Controllers\User\Subscriptions;
 
 use Illuminate\Routing\Controller;
 use Sixincode\HiveStream\Models\SubscriptionPlan;

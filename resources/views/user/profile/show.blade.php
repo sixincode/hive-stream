@@ -1,3 +1,3 @@
 <x-hive-display-layout-app>
-  tokens
+  show profile
 </x-hive-display-layout-app>

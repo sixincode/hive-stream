@@ -2,9 +2,9 @@
 
 namespace Sixincode\HiveStream;
 
-use Sixincode\HiveStream\Http\Middleware\HiveStreamAuthenticated;
-use Sixincode\HiveStream\Http\Middleware\HiveStreamApplyProfile;
-use Sixincode\HiveStream\Http\Middleware\HiveStreamIsVerified;
+// use Sixincode\HiveStream\Http\Middleware\HiveStreamAuthenticated;
+// use Sixincode\HiveStream\Http\Middleware\HiveStreamApplyProfile;
+// use Sixincode\HiveStream\Http\Middleware\HiveStreamIsVerified;
 use Sixincode\ModulesInit\Package;
 use Sixincode\ModulesInit\PackageServiceProvider;
 use Sixincode\HiveStream\Commands\HiveStreamCommand;
@@ -17,10 +17,11 @@ use Sixincode\HiveStream\Traits\HiveStreamDatabase;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
-use HiveCommunity\Models\TeamMembership;
-use HiveCommunity\Models\Team;
+// use HiveCommunity\Models\TeamMembership;
+// use HiveCommunity\Models\Team;
 use App\Models\User;
 use Sixincode\HiveStream\Gear\OnBoardNewUser;
+use Illuminate\Foundation\AliasLoader;
 
 class HiveStreamServiceProvider extends PackageServiceProvider
 {
@@ -28,9 +29,14 @@ class HiveStreamServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('hive-stream')
-            ->hasConfigFile(['hive-stream','hive-stream-components','hive-stream-auth-settings'])
-            ->hasRoutes(['web','user','api'])
+            ->hasConfigFile(['hive-stream','hive-stream-user','hive-stream-middlewares','hive-stream-features','hive-stream-components','hive-stream-auth-settings'])
+            ->hasRoutes(['web','user','user-verification','user-teams','user-subscriptions','api'])
             ->hasViews()
+            // ->hasAssets()
+            // ->hasTranslations()
+            // ->hasBladeComponents()
+            // ->hasLayouts()
+            // ->hasIcons()
             ->hasMigration('create_hive-stream_table')
             ->hasCommand(HiveStreamCommand::class);
             $this->app->register(\Laravel\Fortify\FortifyServiceProvider::class);
@@ -39,27 +45,17 @@ class HiveStreamServiceProvider extends PackageServiceProvider
             $this->registerHiveStreamDatabaseMethods();
     }
 
+    public function registeringPackage()
+    {
+      $loader = AliasLoader::getInstance();
+      $loader->alias('Laravel\Fortify\Contracts\CreatesNewUsers', 'Sixincode\HiveStream\Contracts\CreatesNewUsers');
+    }
+
     public function bootingPackage()
     {
-      $this->bootHiveStreamMiddlewares();
-      $this->morphMapping();
-      $this->bootLaravelFortifySettings();
-      $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+       $this->morphMapping();
+       $this->bootLaravelFortifySettings();
     }
-
-    public function packageBooted()
-    {
-      $this->bootHiveStreamBladeAndLivewireComponents();
-    }
-
-    public function bootHiveStreamBladeAndLivewireComponents()
-    {
-      $prefix = config('hive-stream-components.prefix', 'hive-stream');
-      foreach (config('hive-stream-components.livewire', []) as $alias => $component) {
-          $alias = $prefix ? "$prefix-$alias" : $alias;
-          Livewire::component($alias, $component);
-        }
-     }
 
      private function registerHiveStreamDatabaseMethods(): void
      {
@@ -96,47 +92,48 @@ class HiveStreamServiceProvider extends PackageServiceProvider
        });
      }
 
-     public function bootHiveStreamMiddlewares()
-     {
-      // $kernel = resolve(Kernel::class);
-      $router = $this->app->make(Router::class);
-      // $this->loadSeeders();
-      $router->aliasMiddleware('user_verified', HiveStreamApplyProfile::class);
-      $router->aliasMiddleware('hiveStreamAuth', HiveStreamAuthenticated::class);
-    }
+    //  public function bootHiveStreamMiddlewares()
+    //  {
+    //   // $kernel = resolve(Kernel::class);
+    //   $router = $this->app->make(Router::class);
+    //   // $this->loadSeeders();
+    //   $router->aliasMiddleware('user_verified', HiveStreamApplyProfile::class);
+    //   $router->aliasMiddleware('hiveStreamAuth', HiveStreamAuthenticated::class);
+    // }
 
     public function bootLaravelFortifySettings()
     {
       Fortify::loginView(function () {
-          return view('hive-stream::auth.login');
+          return check_hasLoginView();
       });
       Fortify::registerView(function () {
-          return view('hive-stream::auth.register');
+          return check_hasRegisterView();
       });
       Fortify::verifyEmailView(function () {
-          return view('hive-stream::auth.verify-email');
+          return check_hasVerifyEmailView();
       });
       Fortify::twoFactorChallengeView(function () {
-          return view('hive-stream::auth.two-factor-challenge');
+          return check_hasTwoFactorChallengeView();
       });
       Fortify::requestPasswordResetLinkView(function () {
-          return view('hive-stream::auth.forgot-password');
+          return check_hasRequestPasswordResetLinkView();
       });
       Fortify::resetPasswordView(function () {
-          return view('hive-stream::auth.reset-password');
+          return check_hasResetPasswordView();
       });
       Fortify::confirmPasswordView(function () {
-          return view('hive-stream::auth.confirm-password');
+          return check_hasConfirmPasswordView();
       });
-      Fortify::createUsersUsing(OnBoardNewUser::class);
+      // Fortify::ignoreRoutes();
+      Fortify::createUsersUsing(check_hasCreateNewUserClass());
     }
 
     public function bootLaravelJetstreamSettings()
     {
-      Jetstream::useUserModel(User::class);
-      Jetstream::useTeamModel(Team::class);
-      Jetstream::useMembershipModel(TeamMembership::class);
-      Jetstream::createTeamsUsing(OnBoardNewUser::class);
+      // Jetstream::useUserModel(User::class);
+      // Jetstream::useTeamModel(Team::class);
+      // Jetstream::useMembershipModel(TeamMembership::class);
+      // Jetstream::createTeamsUsing(OnBoardNewUser::class);
     }
 
     public function morphMapping()
@@ -146,11 +143,4 @@ class HiveStreamServiceProvider extends PackageServiceProvider
       ]);
     }
 
-    // protected function loadSeeders(){
-    //     $this->callAfterResolving(
-    //       Database\Seeders\DatabaseSeeder::class, function ($seeder) {
-    //                  $seeder->call(Sixincode\HiveStream\Database\Seeders\HiveStreamDatabaseSeeder::class );
-    //                 // Code that will print out in console after migration is succesful
-    //          });
-    // }
 }

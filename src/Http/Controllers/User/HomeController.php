@@ -15,4 +15,9 @@ class HomeController extends Controller
   {
     return view('hive-stream::user.profile.index');
   }
+
+  public function profilePageShow()
+  {
+    return view('hive-stream::user.profile.show');
+  }
 }
