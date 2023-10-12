@@ -18,8 +18,8 @@
     "require": {
         "php": "^8.1",
         "illuminate/contracts": "^10.0",
-        "laravel/jetstream": "2.x-dev",
-        "livewire/livewire": "^2.5",
+        "laravel/jetstream": "^4.0",
+        "livewire/livewire": "^3.0",
         "sixincode/modules-init": "dev-main"
     },
     "require-dev": {
