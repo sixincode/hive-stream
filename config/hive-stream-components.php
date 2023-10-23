@@ -39,7 +39,7 @@ return [
     'settings-index' => HiveStreamLivewire\User\Settings\Index::class,
     'subscriptions-show' => HiveStreamLivewire\User\Subscriptions\Show::class,
     'tokens-index' => HiveStreamLivewire\User\Tokens\Index::class,
-    'verification-index' =>  HiveStreamLivewire\User\Verification\Request::class,
+    'verification-request' =>  HiveStreamLivewire\User\Verification\Request::class,
 
     'profile-edit-bio' => HiveStreamLivewire\User\Profile\EditBio::class,
     'profile-edit-billing' => HiveStreamLivewire\User\Profile\EditBilling::class,

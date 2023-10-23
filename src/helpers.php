@@ -1,5 +1,14 @@
 <?php
 
+  function check_hasJetstream()
+  {
+    if(function_exists('hasJetstream')) {
+        return hasJetstream();
+    }else{
+        return config('hive-stream.hasJetstream');
+    }
+  }
+
   function check_hasUserFeatures()
   {
     if(function_exists('hasUserFeatures')) {
@@ -9,10 +18,29 @@
     }
   }
 
+  // TABLES
+  function check_tableUsers()
+  {
+    if(function_exists('tableUsers')) {
+        return tableUsers();
+    }else{
+        return config('hive-stream.table_names.users');
+    }
+  }
+
+  function check_tableLogins()
+  {
+    if(function_exists('tableLogins')) {
+        return tableLogins();
+    }else{
+        return config('hive-stream.table_names.logins');
+    }
+  }
+
   function check_hasRegistrationFeatures()
   {
     if(function_exists('hasRegistrationFeatures')) {
-        return hasRegistration();
+        return hasRegistrationFeatures();
     }else{
         return config('hive-stream-features.hasRegistrationFeatures');
     }
@@ -146,5 +174,25 @@
         return hasCreateNewUserClas();
     }else{
         return Sixincode\HiveStream\Gear\OnBoardNewUser::class;
+    }
+  }
+
+  // SUBSCRIPTIONS
+  function check_hasDefaultSubscriptionPlan()
+  {
+    if(function_exists('hasDefaultSubscriptionPlan')) {
+        return hasDefaultSubscriptionPlan();
+    }else{
+      return config('hive-stream-features.addSubscriptionPlanToNewUser');
+    }
+  }
+
+  // SETTINGS
+  function check_hasDefaultSettingModel()
+  {
+    if(function_exists('hasDefaultSettingsModel')) {
+        return hasDefaultSettingsModel();
+    }else{
+      return config('hive-stream-features.addSettingsModelToNewUser');
     }
   }

@@ -9,4 +9,7 @@ return [
   'hasTeamOwnershipOnCreateFeatures' => true,
   'hasTeamAppDefaultMembershipFeatures' => false,
   'hasSubscriptionFeatures'          => false,
+  'addSubscriptionPlanToNewUser'     => false,
+  'addSettingsModelToNewUser'     => false,
+
 ];

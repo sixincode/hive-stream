@@ -4,16 +4,13 @@ namespace Sixincode\HiveStream\Http\Middleware;
 
 use Closure;
 
-class HiveStreamIsVerified
+class HiveStreamIsAdmin
 {
   public function handle($request, Closure $next)
   {
     $response = $next($request);
 
-    if(! auth()->check())
-    {
-      // return route('user.verification.pending');
-    }
+    // Perform action
 
     return $response;
   }

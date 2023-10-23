@@ -8,8 +8,8 @@ trait HiveStreamUser
   protected static function bootHiveStreamUser()
   {
     static::created(function ($user) {
-      $subscriptionPlanDefault  = SubscriptionPlan::getDefaultUserPlan();
-      if($subscriptionPlanDefault){
+      if(check_hasDefaultSubscriptionPlan()){
+        $subscriptionPlanDefault  = SubscriptionPlan::getDefaultUserPlan();
         $user->newPlanSubscription($subscriptionPlanDefault);
       }
     });

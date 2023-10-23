@@ -7,13 +7,10 @@ use Sixincode\HiveStream\Http\Middleware\HiveStreamIsVerified;
 
 return [
   // 'admin'           => ['auth:admin'],
-  // 'user'            => ['auth'],
   'central'         => ['web'],
-  'auth'            => ['auth:web', AuthenticateSession::class, 'verified' ],
+  'user'            => ['web','auth:web',HiveStreamIsVerified::class,AuthenticateSession::class],
   'api'             => ['api'],
-  'non_verified'    => ['auth:web'],
+  'non_verified'    => ['web','auth:web'],
   'user_verified'   =>  HiveStreamApplyProfile::class,
   'hiveStreamAuth'  =>  HiveStreamAuthenticated::class,
-  // 'auth_session' => AuthenticateSession::class,
-
 ];

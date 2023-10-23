@@ -8,6 +8,15 @@ trait HasSettings
 {
   use UserHasNotificationsTrait;
 
+  protected static function bootHasSettings()
+  {
+    static::created(function ($user) {
+      if(check_hasDefaultSettingModel()){
+        $this->setUserSettings();
+      }
+    });
+  }
+
   public function getUserSettings()
   {
     $userSettings = auth()->user()->settings()->firstOrCreate(

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Sixincode\HiveStream\Http\Controllers\User\Subscriptions as Controllers;
 
 Route::middleware(
-  config('hive-stream-middlewares.auth', ['auth:web'])
+  config('hive-stream-middlewares.user', ['web','auth:web']),
 )->group(function () {
 
   if (check_hasSubscriptionFeatures()) {

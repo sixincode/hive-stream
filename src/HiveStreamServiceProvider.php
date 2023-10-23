@@ -2,9 +2,9 @@
 
 namespace Sixincode\HiveStream;
 
-// use Sixincode\HiveStream\Http\Middleware\HiveStreamAuthenticated;
-// use Sixincode\HiveStream\Http\Middleware\HiveStreamApplyProfile;
-// use Sixincode\HiveStream\Http\Middleware\HiveStreamIsVerified;
+use Sixincode\HiveStream\Http\Middleware\HiveStreamAuthenticated;
+use Sixincode\HiveStream\Http\Middleware\HiveStreamIsAdmin;
+use Sixincode\HiveStream\Http\Middleware\HiveStreamIsVerified;
 use Sixincode\ModulesInit\Package;
 use Sixincode\ModulesInit\PackageServiceProvider;
 use Sixincode\HiveStream\Commands\HiveStreamCommand;
@@ -34,7 +34,7 @@ class HiveStreamServiceProvider extends PackageServiceProvider
             ->hasViews()
             // ->hasAssets()
             // ->hasTranslations()
-            // ->hasBladeComponents()
+            ->hasBladeComponents()
             // ->hasLayouts()
             // ->hasIcons()
             ->hasMigration('create_hive-stream_table')
@@ -43,12 +43,16 @@ class HiveStreamServiceProvider extends PackageServiceProvider
             $this->app->register(\Laravel\Jetstream\JetstreamServiceProvider::class);
 
             $this->registerHiveStreamDatabaseMethods();
+            $this->bootHiveStreamMiddlewares();
     }
 
     public function registeringPackage()
     {
       $loader = AliasLoader::getInstance();
-      $loader->alias('Laravel\Fortify\Contracts\CreatesNewUsers', 'Sixincode\HiveStream\Contracts\CreatesNewUsers');
+      $loader->alias('App\Actions\Fortify\UpdateUserProfileInformation', 'Sixincode\HiveStream\Contracts\UpdateUserProfileInformation');
+      $loader->alias('Laravel\Jetstream\Http\Livewire\UpdateProfileInformationForm', 'Sixincode\HiveStream\Http\Livewire\User\Jet\UpdateProfileInformationForm');
+      $loader->alias('App\Actions\Fortify\CreateNewUser', check_hasCreateNewUserClass());
+      $loader->alias('App\View\Components\AppLayout', check_getLayoutApp());
     }
 
     public function bootingPackage()
@@ -92,14 +96,15 @@ class HiveStreamServiceProvider extends PackageServiceProvider
        });
      }
 
-    //  public function bootHiveStreamMiddlewares()
-    //  {
-    //   // $kernel = resolve(Kernel::class);
-    //   $router = $this->app->make(Router::class);
-    //   // $this->loadSeeders();
-    //   $router->aliasMiddleware('user_verified', HiveStreamApplyProfile::class);
-    //   $router->aliasMiddleware('hiveStreamAuth', HiveStreamAuthenticated::class);
-    // }
+     public function bootHiveStreamMiddlewares()
+     {
+      // $kernel = resolve(Kernel::class);
+      $router = $this->app->make(Router::class);
+      // $this->loadSeeders();
+      $router->aliasMiddleware('hive-stream-user', HiveStreamIsVerified::class);
+      $router->aliasMiddleware('hive-stream-is_admin', HiveStreamIsAdmin::class);
+      $router->aliasMiddleware('hive-stream-auth', HiveStreamAuthenticated::class);
+    }
 
     public function bootLaravelFortifySettings()
     {

@@ -1,6 +1,6 @@
 <div>
+  <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2830&amp;q=80&amp;sat=-100" alt="People working on laptops">
   <x-hive-display-section class="relative h-screen items-center grid sm:py-4">
-          <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2830&amp;q=80&amp;sat=-100" alt="People working on laptops">
       <div class="z-10 sm:max-w-xl w-full bg-white/95 mx-auto sm:shadow rounded-md p-4 lg:p-8 grid gap-8">
         <div class="flex space-x-4">
           <img class="h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&amp;shade=600" alt="Your Company">
@@ -12,82 +12,75 @@
 
       <form action="{{ route('register') }}" method="POST">
           @csrf
-       <div class="grid lg:grid-cols-12 gap-4 ">
+       <div class="grid lg:grid-cols-6 gap-4 ">
 
           <div class="lg:col-span-6">
             <x-hive-form-input
+              component="winny"
               name="first_name"
               placeholder="{{__('First Name')}}"
               required="true"
-              label="{{__('First Name')}}"
               value="{{ old('first_name', '') }}"
-              id="first_name"
-              error_message="{{__('Please enter your first name')}}" />
+              id="first_name"/>
             </div>
           <div class="lg:col-span-6">
             <x-hive-form-input
+              component="winny"
               name="last_name"
               placeholder="{{__('Last Name')}}"
               required="true"
-              label="{{__('Last Name')}}"
               value="{{ old('last_name', '') }}"
-              id="last_name"
-              error_message="{{__('Please enter your last name')}}" />
+              id="last_name"/>
             </div>
             <div class="lg:col-span-6">
               <x-hive-form-input
+                component="winny"
                 name="username"
                 placeholder="{{__('Username')}}"
                 required="true"
-                label="{{__('Username')}}"
                 value="{{ old('username', '') }}"
-                id="username"
-                error_message="{{__('Please pick your username')}}" />
+                id="username"/>
               </div>
               <div class="lg:col-span-6">
 
                 </div>
               <div class="lg:col-span-6">
                 <x-hive-form-input
+                  component="winny"
                   name="email"
                   type="email"
                   placeholder="{{__('Email Address')}}"
                   required="true"
-                  label="{{__('Email Address')}}"
                   value="{{ old('email', '') }}"
-                  id="email"
-                  error_message="{{__('Please enter your e-mail')}}" />
+                  id="email"/>
                 </div>
                 <div class="lg:col-span-6">
                   <x-hive-form-input
+                    component="winny"
                     name="phone"
                     type="phone"
                     placeholder="{{__('Phone #')}}"
                     required="false"
-                    label="{{__('Phone #')}}"
                     value="{{ old('phone', '') }}"
-                    id="phone"
-                    error_message="{{__('Please enter your phone number')}}" />
+                    id="phone"/>
                   </div>
                 <div class="lg:col-span-6">
                   <x-hive-form-input
+                    component="winny"
                     name="password"
                     type="password"
                     placeholder="{{__('Password')}}"
                     required="true"
-                    label="{{__('Password')}}"
-                    id="password"
-                    error_message="{{__('Please enter your password')}}" />
+                    id="password" />
                   </div>
                   <div class="lg:col-span-6">
                     <x-hive-form-input
+                      component="winny"
                       name="password_confirmation"
                       type="password"
                       placeholder="{{__('Password confirmation')}}"
                       required="true"
-                      label="{{__('Password confirmation')}}"
-                      id="password_confirmation"
-                      error_message="{{__('Please confirm your password')}}" />
+                      id="password_confirmation"/>
                     </div>
                   </div>
 

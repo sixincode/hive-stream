@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use App\Actions\Fortify\PasswordValidationRules;
 use Illuminate\Validation\Rule;
 
 class OnBoardNewUser implements CreatesNewUsers
@@ -24,7 +23,7 @@ class OnBoardNewUser implements CreatesNewUsers
   {
       Validator::make($input, [
           'name'       => ['required_without:first_name,last_name', 'string', 'max:255'],
-          'username'   => ['string', 'max:255', 'unique:users'],
+          'username'   => ['string', 'max:255', Rule::unique(User::class)],
           'first_name' => ['required_without:name', 'string', 'max:255', 'min:2'],
           'last_name'  => ['required_without:name', 'string', 'max:255','min:2'],
           'email'      => ['required','string','email','max:255', Rule::unique(User::class),],
@@ -36,11 +35,12 @@ class OnBoardNewUser implements CreatesNewUsers
           return tap(User::create([
               'first_name' => $input['first_name'],
               'last_name'  => $input['last_name'],
-              'email' => $input['email'],
-              'password' => Hash::make($input['password']),
+              'username'   => $input['username'],
+              'email'      => $input['email'],
+              'password'   => Hash::make($input['password']),
           ]), function (User $user) {
             if(check_hasTeamFeatures()){
-              $this->createTeam($user);
+              $this->getBehaviour($user);
             }
           });
       });
@@ -49,7 +49,7 @@ class OnBoardNewUser implements CreatesNewUsers
   /**
    * Check team seetings to apply behaviour.
    */
-  protected function getBehaviour($user)
+  private function getBehaviour($user)
   {
     if(check_hasTeamOwnershipOnCreateFeatures()){
        $this->createTeam($user);

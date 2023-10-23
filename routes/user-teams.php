@@ -2,9 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use Sixincode\HiveStream\Http\Controllers\User\Settings as Controllers;
+use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
+use Laravel\Jetstream\Http\Controllers\Livewire\TeamController;
+use Laravel\Jetstream\Http\Controllers\TeamInvitationController;
 
 Route::middleware(
-  config('hive-stream-middlewares.auth', ['auth:web'])
+  config('hive-stream-middlewares.user', ['web','auth:web']),
 )->group(function () {
 
   if(check_hasTeamFeatures()) {

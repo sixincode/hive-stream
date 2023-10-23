@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'hasJetstream' => false,
     'stack' => 'livewire',
     // 'features' => [Features::accountDeletion()],
     'profile_photo_disk' => 'public',
