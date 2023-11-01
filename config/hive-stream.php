@@ -7,8 +7,6 @@ return [
     'profile_photo_disk' => 'public',
     'process' => [
       'createPersonalteamOnRegistration' => true,
-      'defaultTeamCode' => '4000',
-
     ],
     'models'             => [
       'profile'                     => Sixincode\HiveStream\Models\Profile::class,

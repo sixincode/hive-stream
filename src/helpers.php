@@ -64,6 +64,7 @@
     }
   }
 
+  // TEAMS
   function check_hasTeamFeatures()
   {
     if(function_exists('hasTeamFeatures')) {

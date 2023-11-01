@@ -78,7 +78,8 @@ class OnBoardNewUser implements CreatesNewUsers
   {
         $defaultTeam =
         Team::firstOrCreate([
-          'code' => config('hive-stream.process.defaultTeamCode'),
+          'code' => check_getDefaultTeamCode(),
+          'reference'     => check_getMainTeamReference(),
           'personal_team' => false,
           ]);
         $defaultTeam->users()->attach($user);

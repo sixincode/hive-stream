@@ -19,6 +19,7 @@
         "php": "^8.1",
         "illuminate/contracts": "^10.0",
         "laravel/jetstream": "^4.0",
+        "sixincode/hive-community": "dev-main",
         "sixincode/modules-init": "dev-main"
     },
     "require-dev": {
