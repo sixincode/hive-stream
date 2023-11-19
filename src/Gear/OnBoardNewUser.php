@@ -51,11 +51,12 @@ class OnBoardNewUser implements CreatesNewUsers
    */
   private function getBehaviour($user)
   {
+    if(check_hasTeamAppDefaultMembershipFeatures()){
+       $this->addToDefaultCommunity($user);
+    }
+    
     if(check_hasTeamOwnershipOnCreateFeatures()){
        $this->createTeam($user);
-    }
-    if(check_hasTeamAppDefaultMembershipFeatures()){
-       $this->addToDefaultTeam($user);
     }
   }
 
@@ -68,20 +69,17 @@ class OnBoardNewUser implements CreatesNewUsers
             'user_id' => $user->id,
             'name' => $user->username,
             'personal_team' => true,
+            'code'          => check_getDefaultTeamCode(),
+            'reference'     => check_getDefaultTeamReference(),
         ]));
   }
 
   /**
    * Add user to default App Team.
    */
-  protected function addToDefaultTeam(User $user): void
+  protected function addToDefaultCommunity(User $user): void
   {
-        $defaultTeam =
-        Team::firstOrCreate([
-          'code' => check_getDefaultTeamCode(),
-          'reference'     => check_getMainTeamReference(),
-          'personal_team' => false,
-          ]);
+        $defaultTeam = Team::whereCode(check_getDefaultCommunityCode())->first();
         $defaultTeam->users()->attach($user);
   }
 }

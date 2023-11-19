@@ -30,7 +30,7 @@ class HiveStreamServiceProvider extends PackageServiceProvider
         $package
             ->name('hive-stream')
             ->hasConfigFile(['hive-stream','hive-stream-user','hive-stream-middlewares','hive-stream-features','hive-stream-components','hive-stream-auth-settings'])
-            ->hasRoutes(['web','user','user-verification','user-teams','user-subscriptions','api'])
+            ->hasRoutes(['web','user','user-verification','user-subscriptions','api'])
             ->hasViews()
             // ->hasAssets()
             // ->hasTranslations()
