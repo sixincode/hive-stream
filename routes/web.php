@@ -10,7 +10,7 @@ Route::middleware(
 
   if(check_hasTermsAndPrivacyPolicyFeatures()) {
     Route::get('/terms', [Controllers\Central\TermsOfServiceController::class, 'showTerms'])->name('terms.show');
-    Route::get('/privacy', [Controllers\Central\PrivacyPolicyController::class, 'showPrivacy'])->name('policy.show');
+    Route::get('/privacy', [Controllers\Central\PrivacyPolicyController::class, 'showPrivacy'])->name('privacy.show');
   }
 
   if(check_hasRegistrationFeatures()) {
